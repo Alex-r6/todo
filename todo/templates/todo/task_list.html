@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-B/GM4XqrwHnWXNOWMbloTmrYXZg10cakYGmpfsR/bbzQ6JAJI4ihuyADKLnBgrCe" crossorigin="anonymous">-->
+    <script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-1a/pXj49ZQ1aHEmrJ+gMw1otqoVsYwlEnlD8mIfY2TV03r20Y0CN7uqx1tQogjPL" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container pt-3">
+    <div class="row">
+        <div class="d-flex flex-column col-2" >
+    <div class="d-flex justify-content-center align-items-center "
+         style="width: 100px; height: 30px; border: 2px solid grey;color: blue;">
+        <a href="{% url 'task_list'%}">Home</a>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center"
+         style="width: 100px; height: 30px; border: 2px solid grey; border-top: 0; color: blue;">
+        <a href="{% url 'tag_list'%}">Tags</a>
+    </div>
+</div>
+
+        <div class="col-8">
+            <h1>TODO list</h1>
+        </div>
+
+        <div class="col-2">
+            <a  class="btn btn-primary" href="{% url 'task_create'%}" >
+                Add task
+            </a>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-2"></div>
+       <div class="col-10 d-flex flex-column">
+    {% for task in tasks %}
+        <div class="d-flex justify-content-between align-items-center ">
+
+            <div class="col-8">
+                {{ task }} {%if not task.is_done%}
+                        <span class="text-danger">Not done</span>
+                            {%else%}
+                        <span class="text-success">Done</span>
+                            {%endif%}
+                <p>created: {{ task.datetime }}
+                    {%if task.deadline%}
+                    <span class="text-warning">Deadline: {{task.deadline}}</span>
+                    {%endif%}
+                </p>
+                <p>Tags:
+                {% for tag in task.tags.all %}
+                    {{ tag }}
+                {% endfor %}
+                <a href="{% url 'task_update' task.pk %}" class="text-primary text-decoration-none">Update</a>
+                <a href="{% url 'task_delete' task.pk %}" class="text-primary text-decoration-none">Delete</a></p>
+            </div>
+
+            <div>
+                <form method="Post">
+                    <input type="hidden" name="task_id" value="{{task.id}}">
+                     {% csrf_token %}
+                    {%if task.is_done %}
+                <button class="btn btn-secondary" type="submit">Undo</button>
+                {%else%}
+                <button class="btn btn-primary" type="submit">Complete</button>
+                {%endif%}
+                </form>
+            </div>
+
+        </div>
+           <hr>
+    {% endfor %}
+</div>
+    </div>
+
+</body>
+</html>

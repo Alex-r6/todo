@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Title</title>
+</head>
+<body>
+<div class="row">
+    <div class="col-4">
+        <div class="d-flex justify-content-center align-items-center "
+         style="width: 100px; height: 30px; border: 2px solid grey;color: blue;">
+        <a href="{% url 'task_list'%}">Home</a>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center"
+         style="width: 100px; height: 30px; border: 2px solid grey; border-top: 0; color: blue;">
+        <a href="{% url 'tag_list'%}">Tags</a>
+    </div>
+    </div>
+    <div class="col-2">
+            <a  class="btn btn-primary" href="{% url 'tag_create'%}" >
+                Add tag
+            </a>
+    </div>
+</div>
+
+
+<table>
+    {% for tag in object_list %}
+    <tr>
+        <td>
+            {{tag}}
+        </td>
+        <td>
+            <a href="{% url 'tag_update' tag.pk %}">Update</a>
+        </td>
+        <td>
+            <a href="{% url 'tag_delete' tag.pk %}">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
